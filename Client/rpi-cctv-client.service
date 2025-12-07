@@ -1,0 +1,14 @@
+[Unit]
+Description=RPi CCTV Client - Records video and stores in buffer
+After=network.target
+
+# StartLimitIntervalSec=0
+
+[Service]
+ExecStart=<bash_path> <script_path>
+User=pi
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
