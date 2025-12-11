@@ -32,11 +32,16 @@ A multi-camera CCTV surveillance system based on Raspberry Pi. Designed with a c
 rpi-cctv/
 ├── README.md                          # Project documentation
 ├── Client/                            # Raspberry Pi client
-│   ├── record.sh                      # Video recording script
 │   ├── setup.sh                       # Client setup script
+│   ├── record.sh                      # Video recording script
 │   └── rpi-cctv-client.service        # systemd service file
 └── Server/                            # Central server
-    └── (Server code)
+    ├── setup.sh                       # Server setup script
+    ├── config.yaml                    # Configuration file with host aliases
+    ├── collect_cctv.py                # Main video collection script
+    ├── rpi-cctv-server.service        # systemd service file
+    └── rpi-cctv-server.timer          # systemd timer for scheduled collection
+
 ```
 
 ---
