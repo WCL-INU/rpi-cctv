@@ -13,9 +13,11 @@ fi
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 REPO_DIR=$(dirname "$SCRIPT_DIR") # 상위 폴더
 
-SCRIPT_PATH="$SCRIPT_DIR/record.sh"
+SCRIPT_PATH="$SCRIPT_DIR/record.py"
 SERVICE_SOURCE="$SCRIPT_DIR/rpi-cctv-client.service"
 SERVICE_DEST="/etc/systemd/system/rpi-cctv-client.service"
+
+PYTHON_PATH=$(which python3)
 
 # 3. record.sh 실행 권한 부여
 chmod +x "$SCRIPT_PATH"
@@ -37,7 +39,7 @@ fi
 echo "[Info] 서비스 등록 중..."
 
 # rpi-cctv-client.service 템플릿 파일에서 ExecStart 경로를 현재 위치로 바꿔서 복사
-sed "s|ExecStart=.*|ExecStart=$SCRIPT_PATH|" "$SERVICE_SOURCE" > "$SERVICE_DEST"
+sed "s|ExecStart=.*|ExecStart=$PYTHON_PATH $SCRIPT_PATH|" "$SERVICE_SOURCE" > "$SERVICE_DEST"
 
 # 6. 서비스 재로딩 및 활성화
 systemctl daemon-reload
