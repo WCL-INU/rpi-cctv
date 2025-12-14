@@ -5,7 +5,7 @@ HOSTNAME=$(hostname)
 
 rpicam-vid -t 0 --inline -n \
     --segment 120000 \
-    --bitrate 10000000 \
+    --bitrate 4000000 \
     --profile high \
     --framerate 24 \
     --width 1640 \
