@@ -63,6 +63,8 @@ class CCTVRecorder:
     def start_camera(self):
         if self.process is None:
             print(f"[Start] 녹화를 시작합니다. (Bitrate: 4Mbps)")
+            DATE = datetime.now().strftime("%Y%m%d_%H%M%S")
+            CMD_ARGS[-1] = f"{BUFFER_DIR}/{HOSTNAME}_{DATE}_%04d.h264"
             # Popen으로 백그라운드 실행
             self.process = subprocess.Popen(CMD_ARGS)
 
