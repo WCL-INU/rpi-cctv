@@ -2,9 +2,9 @@ import os
 import time
 import subprocess
 import signal
-import sys
 import shutil
 from datetime import datetime
+from types import FrameType
 
 # ================= 설정 구간 =================
 # 저장 경로
@@ -55,9 +55,10 @@ class CCTVRecorder:
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
 
-    def shutdown(self, signum, frame):
+    def shutdown(self, signum: int, frame: FrameType | None) -> None:
         print("[Info] 종료 신호를 받았습니다. 정리 중...")
         self.stop_camera()
+        self.running = False
         self.running = False
 
     def start_camera(self):
@@ -81,7 +82,7 @@ class CCTVRecorder:
     def cleanup_disk(self):
         """디스크 용량이 부족하면 가장 오래된 파일을 지웁니다."""
         try:
-            total, used, free = shutil.disk_usage(BUFFER_DIR)
+            total, used, _ = shutil.disk_usage(BUFFER_DIR)
             usage_percent = (used / total) * 100
 
             if usage_percent >= DISK_THRESHOLD_PERCENT:
