@@ -10,8 +10,8 @@ from datetime import datetime
 # 저장 경로
 BUFFER_DIR = "/home/pi/cctv_buffer"
 
-# 녹화 시간 (06시 ~ 17시, 즉 17:59까지)
-START_HOUR = 6
+# 녹화 시간 (07시 ~ 17시, 즉 17:59까지)
+START_HOUR = 7
 END_HOUR = 17
 
 DATE = datetime.now().strftime("%Y%m%d_%H%M%S")
