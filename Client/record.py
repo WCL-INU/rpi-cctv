@@ -37,6 +37,8 @@ CMD_ARGS = [
     "4000000",
     "--profile",
     "high",
+    "--save-pts",
+    f"{BUFFER_DIR}/{HOSTNAME}_{DATE}.txt",
     "-o",
     f"{BUFFER_DIR}/{HOSTNAME}_{DATE}_%04d.h264",
 ]
@@ -65,6 +67,7 @@ class CCTVRecorder:
         if self.process is None:
             print(f"[Start] 녹화를 시작합니다. (Bitrate: 4Mbps)")
             DATE = datetime.now().strftime("%Y%m%d_%H%M%S")
+            CMD_ARGS[-3] = f"{BUFFER_DIR}/{HOSTNAME}_{DATE}.txt"
             CMD_ARGS[-1] = f"{BUFFER_DIR}/{HOSTNAME}_{DATE}_%04d.h264"
             # Popen으로 백그라운드 실행
             self.process = subprocess.Popen(CMD_ARGS)

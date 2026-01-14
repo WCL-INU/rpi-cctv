@@ -39,7 +39,7 @@ def sync_single_pi(host: str, REMOTE_DIR: str, LOCAL_BASE_DIR: str) -> Tuple[boo
         find_cmd = [
             "ssh",
             host,
-            f"find '{REMOTE_DIR}' -name '*.h264' -mmin +1 -type f",
+            f"find '{REMOTE_DIR}' -name '*' -mmin +1 -type f",
         ]
 
         # SSH 실행 및 결과 캡처
