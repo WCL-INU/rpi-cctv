@@ -118,7 +118,7 @@ class CCTVRecorder:
             # 1. 주간/야간 모드 확인
             if START_HOUR <= current_hour <= END_HOUR:
 
-                # 매 정각마다 2분만 녹화
+                # 매 정각마다 2.5분만 녹화
                 if now.minute == 0 and now.second < 10:
                     if self.process is None:
                         self.start_camera()
@@ -126,8 +126,8 @@ class CCTVRecorder:
                         print("[Warn] 카메라 프로세스가 비정상 종료됨. 재시작합니다.")
                         self.process = None
                 elif self.process is not None and self.process.poll() is None:
-                    # 2분이 지났으면 종료
-                    if now.minute == 2 and now.second >= 0:
+                    # 2.5분이 지났으면 종료
+                    if now.minute == 2 and now.second >= 30:
                         self.stop_camera()
 
                 # # 녹화 시간인데 꺼져있으면 -> 켠다
@@ -147,8 +147,8 @@ class CCTVRecorder:
             if self.process is not None:
                 self.cleanup_disk()
 
-            # 3. 대기 (10초마다 상태 체크)
-            time.sleep(10)
+            # 3. 대기 (1초마다 상태 체크)
+            time.sleep(1)
 
 
 if __name__ == "__main__":
