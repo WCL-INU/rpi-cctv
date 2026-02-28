@@ -10,9 +10,9 @@ from types import FrameType
 # 저장 경로
 BUFFER_DIR = "/home/pi/cctv_buffer"
 
-# 녹화 시간 (07시 ~ 17시, 즉 17:59까지)
-START_HOUR = 7
-END_HOUR = 17
+# 녹화 시간 (06시 ~ 19시, 즉 19:59까지)
+START_HOUR = 6
+END_HOUR = 19
 
 DATE = datetime.now().strftime("%Y%m%d_%H%M%S")
 HOSTNAME = os.uname().nodename
@@ -24,8 +24,8 @@ CMD_ARGS = [
     "-n",
     "-t",
     "0",
-    "--segment",
-    "120000",
+    # "--segment",
+    # "120000",
     "--inline",
     "--width",
     "1640",
@@ -117,13 +117,26 @@ class CCTVRecorder:
 
             # 1. 주간/야간 모드 확인
             if START_HOUR <= current_hour <= END_HOUR:
-                # 녹화 시간인데 꺼져있으면 -> 켠다
-                if self.process is None:
-                    self.start_camera()
-                # 켜져있으면 -> 프로세스가 죽었는지 확인 (좀비 방지)
-                elif self.process.poll() is not None:
-                    print("[Warn] 카메라 프로세스가 비정상 종료됨. 재시작합니다.")
-                    self.process = None
+
+                # 매 정각마다 2분만 녹화
+                if now.minute == 0 and now.second < 10:
+                    if self.process is None:
+                        self.start_camera()
+                    elif self.process.poll() is not None:
+                        print("[Warn] 카메라 프로세스가 비정상 종료됨. 재시작합니다.")
+                        self.process = None
+                elif self.process is not None and self.process.poll() is None:
+                    # 2분이 지났으면 종료
+                    if now.minute == 2 and now.second >= 0:
+                        self.stop_camera()
+
+                # # 녹화 시간인데 꺼져있으면 -> 켠다
+                # if self.process is None:
+                #     self.start_camera()
+                # # 켜져있으면 -> 프로세스가 죽었는지 확인 (좀비 방지)
+                # elif self.process.poll() is not None:
+                #     print("[Warn] 카메라 프로세스가 비정상 종료됨. 재시작합니다.")
+                #     self.process = None
             else:
                 # 녹화 시간이 아닌데 켜져있으면 -> 끈다
                 if self.process is not None:
